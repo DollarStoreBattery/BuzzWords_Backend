@@ -38,3 +38,5 @@ viable option format - list of letters - central letter
 - list of daily puzzles ready
 
 - simple random sampling without replacement to get a puzzle
+
+- todo: filter out naughty words, read in definition file and regex

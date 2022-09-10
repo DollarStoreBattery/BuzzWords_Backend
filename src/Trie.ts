@@ -110,7 +110,10 @@ export default class Trie {
     indexLevel: number
   ): boolean {
     if (indexLevel == targetWord.length) {
-      return true;
+      if (currentNode.isCompleteWord) {
+        return true;
+      }
+      return false;
     }
     const currLetter = targetWord[indexLevel].toUpperCase() as AlphabetLetters;
     if (currentNode.children[currLetter]) {
@@ -123,10 +126,3 @@ export default class Trie {
     return false;
   }
 }
-
-import dictionary from "./wordlists/dictionary.json";
-
-const dictionaryTrie = new Trie();
-dictionaryTrie.buildFromJson(dictionary);
-console.log(dictionaryTrie.searchTrie("PATCH"));
-console.log(dictionaryTrie.searchTrie("PFAJWOEFJ"));

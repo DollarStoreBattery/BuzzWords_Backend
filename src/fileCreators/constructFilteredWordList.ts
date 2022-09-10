@@ -1,15 +1,17 @@
 import { readFileSync, writeFileSync } from "fs";
 import { MINIMUM_WORD_LENGTH } from "../constants";
-import path, { join } from "path";
+import { join, resolve } from "path";
+import { WORD_LIST_FOLDER } from "./common";
 
-const inputFileName = "wordlists//Collins Scrabble Words (2019).txt";
-const outputFileName = "wordList.json";
+const inputFilePath = resolve(
+  WORD_LIST_FOLDER,
+  "wordlists/Collins Scrabble Words (2019).txt"
+);
 
-const filteredWordList: Array<string> = readFileSync(inputFileName, "utf8")
+const outputFilePath = resolve(WORD_LIST_FOLDER, "wordList.json");
+
+const filteredWordList: Array<string> = readFileSync(inputFilePath, "utf8")
   .split("\r\n")
   .filter((word) => word.length >= MINIMUM_WORD_LENGTH);
 
-writeFileSync(
-  join(__dirname, "wordlists", outputFileName),
-  JSON.stringify(filteredWordList)
-);
+writeFileSync(outputFilePath, JSON.stringify(filteredWordList));

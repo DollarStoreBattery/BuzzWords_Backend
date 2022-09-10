@@ -1,5 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
+import { resolve } from "path";
 import { MINIMUM_WORD_LENGTH, PANGARM_LENGTH } from "../constants";
+import { WORD_LIST_FOLDER } from "./common";
 
 type Word = {
   word: string;
@@ -8,9 +10,14 @@ type Word = {
 
 let wordList: Array<Word> = [];
 
-const filename: string = "Collins Scrabble Words (2019).txt";
+const inputFilePath = resolve(
+  WORD_LIST_FOLDER,
+  "Collins Scrabble Words (2019).txt"
+);
 
-const wordsBulk: Array<string> = readFileSync(filename, "utf-8")
+const outputFilePath = resolve(WORD_LIST_FOLDER, "possiblePangrams.json");
+
+const wordsBulk: Array<string> = readFileSync(inputFilePath, "utf-8")
   .split("\r\n")
   .filter((word) => word.length > MINIMUM_WORD_LENGTH);
 
@@ -26,8 +33,4 @@ const possiblePangrams: Array<string> = wordList
   .filter((word) => word.numUniqueLetters == PANGARM_LENGTH)
   .map((word) => word.word);
 
-writeFileSync(
-  "possiblePangrams.json",
-  JSON.stringify(possiblePangrams),
-  "utf8"
-);
+writeFileSync(outputFilePath, JSON.stringify(possiblePangrams), "utf8");
