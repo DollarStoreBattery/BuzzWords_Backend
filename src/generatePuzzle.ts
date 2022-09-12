@@ -8,23 +8,34 @@
 // generate puzzle solutions for pangram and letter
 
 import wordList from "./wordlists/wordList.json";
-import possiblePangrams from "./wordlists/possiblePangrams.json";
+import uniquePuzzles from "./wordlists/uniquePuzzles.json";
 // import dictionary from "./wordlists/dictionary.json";
 import Trie from "./Trie";
+import { PANGARM_LENGTH } from "./constants";
 
 const randomSample = <Type>(population: Array<Type>): Type => {
   const randNum = Math.floor(Math.random() * population.length);
   return population[randNum];
 };
-const randomPangram = randomSample(possiblePangrams);
-const centralLetter: string = randomSample(randomPangram.split(""));
+
+const getPangrams = (solutionsList: String[]) => {
+  return solutionsList.flatMap((solution) => {
+    const solutionUnique = new Set(solution);
+    if (solutionUnique.size == PANGARM_LENGTH) {
+      return solution;
+    } else return [];
+  });
+};
+
+const randomPuzzle = randomSample(uniquePuzzles);
+const centralLetter: string = randomSample(randomPuzzle.split(""));
+
 const dictionaryTrie = new Trie();
 dictionaryTrie.insertTrieBulk(wordList);
 
-console.log(randomPangram);
-console.log(centralLetter);
-console.log(
-  // dictionaryTrie.findSolutions("A", ["A", "N", "O", "D", "I", "Z", "G"])
-  dictionaryTrie.findSolutions(centralLetter, randomPangram)
+const puzzleSolutions = dictionaryTrie.findSolutions(
+  centralLetter,
+  randomPuzzle
 );
-// console.log(dictionaryTrie.findSolutions(randomPangram[Math.floor(Math.random() * randomPangram.length)],)
+
+console.log(puzzleSolutions, getPangrams(puzzleSolutions));
