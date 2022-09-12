@@ -17,7 +17,7 @@ export default class Trie {
   }
 
   insertTrie(newWord: string): void {
-    return this.insertTrieNodes(this.root, newWord, 0);
+    return this.insertTrieNodes(this.root, newWord.toUpperCase(), 0);
   }
 
   insertTrieBulk(newWords: Array<string>): void {
@@ -26,16 +26,23 @@ export default class Trie {
 
   findSolutions(
     centralLetter: string,
-    targetLetters: Array<string>
+    puzzleLetters: Array<string> | string
   ): Array<string> {
+    let targetLetters: Array<string>;
+
+    if (typeof puzzleLetters === "string") {
+      targetLetters = puzzleLetters.split("");
+    } else targetLetters = puzzleLetters;
+
+    const targetLettersUnique = Array.from(new Set(targetLetters));
     return this.privatefindSolutionNodes(
       this.root,
       0,
       [],
-      centralLetter,
+      centralLetter.toUpperCase(),
       false,
-      targetLetters
-    );
+      targetLettersUnique.map((letr) => letr.toUpperCase())
+    ).sort();
   }
 
   privatefindSolutionNodes(
@@ -57,15 +64,14 @@ export default class Trie {
       return solutions;
     }
     targetLetters.forEach((letter) => {
-      const currLetter = letter.toLocaleUpperCase() as AlphabetLetters;
+      const currLetter = letter as AlphabetLetters;
       if (currentNode.children[currLetter]) {
-        seenCentralLetter = seenCentralLetter || currLetter == centralLetter;
         this.privatefindSolutionNodes(
           currentNode.children[currLetter]!,
           indexLevel + 1,
           solutions,
           centralLetter,
-          seenCentralLetter,
+          seenCentralLetter || currLetter === centralLetter,
           targetLetters
         );
       }
@@ -83,7 +89,7 @@ export default class Trie {
       return;
     }
 
-    const currLetter = newWord[indexLevel].toUpperCase() as AlphabetLetters;
+    const currLetter = newWord[indexLevel] as AlphabetLetters;
 
     if (currentNode.children[currLetter]) {
       this.insertTrieNodes(
@@ -115,7 +121,7 @@ export default class Trie {
       }
       return false;
     }
-    const currLetter = targetWord[indexLevel].toUpperCase() as AlphabetLetters;
+    const currLetter = targetWord[indexLevel] as AlphabetLetters;
     if (currentNode.children[currLetter]) {
       return this.searchTrieNodes(
         currentNode.children[currLetter]!,

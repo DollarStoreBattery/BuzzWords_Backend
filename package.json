@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A recreation of the NYT Spelling Bee Game",
   "main": "index.ts",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/DollarStoreBattery/spellingbee/issues"
   },
-  "homepage": "https://github.com/DollarStoreBattery/spellingbee#readme"
+  "homepage": "https://github.com/DollarStoreBattery/spellingbee#readme",
+  "dependencies": {
+    "redis-om": "^0.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.16"
+  }
 }

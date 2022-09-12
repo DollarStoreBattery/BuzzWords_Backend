@@ -8,6 +8,6 @@ const dictionary = wordList as Array<string>;
 const dictionaryTrie = new Trie();
 dictionaryTrie.insertTrieBulk(dictionary);
 
-const fileName = resolve(WORD_LIST_FOLDER, "dictionary2.json");
+const fileName = resolve(WORD_LIST_FOLDER, "dictionary.json");
 
 writeFileSync(fileName, JSON.stringify(dictionaryTrie));
