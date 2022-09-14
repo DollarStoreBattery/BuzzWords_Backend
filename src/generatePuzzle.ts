@@ -18,7 +18,7 @@ const randomSample = <Type>(population: Array<Type>): Type => {
   return population[randNum];
 };
 
-const getPangrams = (solutionsList: String[]) => {
+const getPangrams = (solutionsList: String[]): String[] => {
   return solutionsList.flatMap((solution) => {
     const solutionUnique = new Set(solution);
     if (solutionUnique.size == PANGARM_LENGTH) {

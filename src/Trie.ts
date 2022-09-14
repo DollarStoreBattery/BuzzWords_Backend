@@ -1,8 +1,8 @@
+import { error } from "console";
 import { AlphabetLetters, MINIMUM_WORD_LENGTH } from "./constants";
 
 class TrieNode {
-  isCompleteWord: boolean = false;
-  letters: string = "";
+  isWord: boolean = false;
   children: { [key in AlphabetLetters]?: TrieNode | undefined } = {};
 }
 
@@ -35,7 +35,8 @@ export default class Trie {
     } else targetLetters = puzzleLetters;
 
     const targetLettersUnique = Array.from(new Set(targetLetters));
-    return this.privatefindSolutionNodes(
+    return this.findSolutionNodes(
+      "",
       this.root,
       0,
       [],
@@ -45,7 +46,8 @@ export default class Trie {
     ).sort();
   }
 
-  privatefindSolutionNodes(
+  private findSolutionNodes(
+    currentWord: string,
     currentNode: TrieNode,
     indexLevel: number,
     solutions: Array<string>,
@@ -55,10 +57,10 @@ export default class Trie {
   ): Array<string> {
     if (
       indexLevel >= MINIMUM_WORD_LENGTH &&
-      currentNode.isCompleteWord &&
+      currentNode.isWord &&
       seenCentralLetter
     ) {
-      solutions.push(currentNode.letters);
+      solutions.push(currentWord);
     }
     if (Object.keys(currentNode.children).length == 0) {
       return solutions;
@@ -66,7 +68,8 @@ export default class Trie {
     targetLetters.forEach((letter) => {
       const currLetter = letter as AlphabetLetters;
       if (currentNode.children[currLetter]) {
-        this.privatefindSolutionNodes(
+        this.findSolutionNodes(
+          currentWord.concat(currLetter),
           currentNode.children[currLetter]!,
           indexLevel + 1,
           solutions,
@@ -85,7 +88,7 @@ export default class Trie {
     indexLevel: number
   ): void {
     if (indexLevel == newWord.length) {
-      currentNode.isCompleteWord = true;
+      currentNode.isWord = true;
       return;
     }
 
@@ -99,9 +102,6 @@ export default class Trie {
       );
     } else {
       currentNode.children[currLetter] = new TrieNode();
-      const latestLetters = currentNode.letters.concat(currLetter);
-      currentNode.children[currLetter]!.letters = latestLetters;
-
       this.insertTrieNodes(
         currentNode.children[currLetter]!,
         newWord,
@@ -116,7 +116,7 @@ export default class Trie {
     indexLevel: number
   ): boolean {
     if (indexLevel == targetWord.length) {
-      if (currentNode.isCompleteWord) {
+      if (currentNode.isWord) {
         return true;
       }
       return false;
