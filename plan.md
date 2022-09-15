@@ -14,7 +14,7 @@ LETR columns could have values of usedBefore:
 
   - for a randomly selected puzzle set
     - randomly select an unused (0) central letter
-      - find its game viability
+      - find its game viability (min points = 50)
         - if unviable, update viability, reselect random letter
           - if all random letters unviable, reselect random puzzle set
         - if viable, choose it and set usedbefore to true (1)
@@ -45,7 +45,7 @@ LETR columns could have values of usedBefore:
   - clearAll
   - get game
 
-  - Game class
+  - Game Type
 
     - puzzle set
     - solutions
@@ -79,17 +79,30 @@ LETR columns could have values of usedBefore:
 
   - backend needs a secret token
 
-    -graphql subscripbtoin is like a websocket https://www.apollographql.com/docs/react/data/subscriptions
-
-    - use appollo
-
   - NEXT + express + REACT QUERY
 
   - what would FE need from BE?
-    - game solution list, letters list, central letter,
+    - game solution list (Array<string>)
+    - letters list (Array<string>)
+    - game ID (number),
+    - game date (Date),
+    - central letter (string),
+    - ranking scheme
 
-- todo: filter out naughty words, read in definition file and regex
+numbers are percentage of total points
+const ranking = {
+'beginner' : 0,
+"good start": 2,
+"moving up": 5,
+"good": 8,
+"solid": 15,
+"Nice": 25,
+"Great": 40,
+"Amazing": 50,
+"Genius": 70,
+"Queen Bee": 100}
+
+- todo: filter out naughty words
 - store game state in cookie/local storage/session storage for persistence
-- nice to have: scrape letters from NYT's puzzle lol
 - hints using dictionary api
-  - store game state in cookie/local storage/session storage for persistence
+- nice to have: scrape letters from NYT's puzzle

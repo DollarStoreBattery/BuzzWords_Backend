@@ -1,5 +1,7 @@
 import { error } from "console";
 import { AlphabetLetters, MINIMUM_WORD_LENGTH } from "./constants";
+import PuzzleInput, { PuzzleSolution } from "./gameTypes";
+import { getPangrams } from "./puzzleHelpers";
 
 class TrieNode {
   isWord: boolean = false;
@@ -24,10 +26,8 @@ export default class Trie {
     newWords.forEach((newWord) => this.insertTrie(newWord));
   }
 
-  findSolutions(
-    centralLetter: string,
-    puzzleLetters: Array<string> | string
-  ): Array<string> {
+  solvePuzzle(input: PuzzleInput): PuzzleSolution {
+    const { centralLetter, puzzleLetters } = input;
     let targetLetters: Array<string>;
 
     if (typeof puzzleLetters === "string") {
@@ -35,7 +35,7 @@ export default class Trie {
     } else targetLetters = puzzleLetters;
 
     const targetLettersUnique = Array.from(new Set(targetLetters));
-    return this.findSolutionNodes(
+    const solutionList = this.findSolutionNodes(
       "",
       this.root,
       0,
@@ -44,6 +44,8 @@ export default class Trie {
       false,
       targetLettersUnique.map((letr) => letr.toUpperCase())
     ).sort();
+
+    return { solutions: solutionList, pangrams: getPangrams(solutionList) };
   }
 
   private findSolutionNodes(
