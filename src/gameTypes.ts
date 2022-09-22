@@ -21,5 +21,5 @@ export interface BasePuzzle extends PuzzleInput {
 }
 
 export interface Puzzle extends BasePuzzle {
-  gameId: number;
+  gameId: string;
 }
