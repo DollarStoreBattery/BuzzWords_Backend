@@ -13,10 +13,6 @@ const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
 rule.minute = 0;
 
-// rule.hour = 19;
-// rule.minute = 59;
-// rule.second = 20;
-
 rule.tz = "Canada/Eastern";
 const job = schedule.scheduleJob(rule, async (fireDate) => {
   console.log(`Scheduled job for ${fireDate} ran.`);
