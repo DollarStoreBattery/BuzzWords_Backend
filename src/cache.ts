@@ -1,10 +1,10 @@
+// only needed when running independently
+// import * as dotenv from "dotenv";
+// dotenv.config();
+
 import Redis from "ioredis";
-import * as dotenv from "dotenv";
 import { getRandomFullPuzzle } from "./puzzleGenerator";
 import { Puzzle } from "./gameTypes";
-import path from "path";
-
-dotenv.config({ path: path.resolve("../.env") });
 
 enum RedisKeys {
   GAME_KEY = "dailyGame",
@@ -22,12 +22,14 @@ export const setDailyGame = async () => {
   const redis = new Redis(getRedisURL());
   const newDailyGame = getRandomFullPuzzle();
   try {
+    // grab the current game from redis to make it yesterdays game, before making a new current game
     const currentGame = await getKey(RedisKeys.GAME_KEY);
     if (currentGame) {
       await redis.set(RedisKeys.YESTERDAY_KEY, JSON.stringify(currentGame));
     }
     await redis.set(RedisKeys.GAME_KEY, JSON.stringify(newDailyGame));
-    return newDailyGame;
+    const { rankingScheme, solutionsWithScores, ...gameSnippet } = newDailyGame;
+    return gameSnippet;
   } catch (error) {
     console.error("Set daily game failed.", error);
   } finally {
