@@ -3,7 +3,7 @@
 // dotenv.config();
 
 import Redis from "ioredis";
-import { getRandomFullPuzzle } from "./puzzleGenerator";
+import { getViablePuzzle } from "./puzzleGenerator";
 import { Puzzle } from "./gameTypes";
 
 enum RedisKeys {
@@ -20,7 +20,7 @@ const getRedisURL = () => {
 
 export const setDailyGame = async () => {
   const redis = new Redis(getRedisURL());
-  const newDailyGame = getRandomFullPuzzle();
+  const newDailyGame = getViablePuzzle();
   try {
     // grab the current game from redis to make it yesterdays game, before making a new current game
     const currentGame = await getKey(RedisKeys.GAME_KEY);

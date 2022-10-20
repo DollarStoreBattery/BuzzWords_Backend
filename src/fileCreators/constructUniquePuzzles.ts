@@ -1,7 +1,8 @@
-import { readFileSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import { resolve } from "path";
-import { MINIMUM_WORD_LENGTH, PANGARM_LENGTH } from "../constants";
+import { PANGARM_LENGTH } from "../constants";
 import { WORD_LIST_FOLDER } from "./common";
+import wordList from "../wordlists/wordList.json";
 
 type Word = {
   word: string;
@@ -9,26 +10,20 @@ type Word = {
   wordUnique: string;
 };
 
-let wordList: Array<Word> = [];
-
-const inputFilePath = resolve(WORD_LIST_FOLDER, "2of12inf.txt");
+let wordsSet: Array<Word> = [];
 
 const outputFilePath = resolve(WORD_LIST_FOLDER, "uniquePuzzles.json");
 
-const wordsBulk: Array<string> = readFileSync(inputFilePath, "utf-8")
-  .split("\r\n")
-  .filter((word) => word.length > MINIMUM_WORD_LENGTH);
-
-wordsBulk.map((word) => {
+wordList.map((word) => {
   const wordAsSet = new Set<string>(word);
-  wordList.push({
+  wordsSet.push({
     word: word,
     numUniqueLetters: wordAsSet.size,
     wordUnique: Array.from(wordAsSet).sort().join(""),
   });
 });
 
-const possiblePangrams: Array<string> = wordList
+const possiblePangrams: Array<string> = wordsSet
   .filter((word) => word.numUniqueLetters == PANGARM_LENGTH)
   .map((word) => word.wordUnique);
 

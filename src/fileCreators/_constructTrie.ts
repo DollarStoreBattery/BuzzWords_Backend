@@ -1,3 +1,7 @@
+// this file is not used.
+// it was originally an experiment to serialize the word list as a Trie into JSON
+// but the deserialization into n Trie Object takes longer than just constructing the Trie from scratch
+
 import { writeFileSync } from "fs";
 import wordList from "../wordlists/wordList.json";
 import Trie from "../Trie";

@@ -11,7 +11,7 @@ const getLoadedTrie = () => {
   return dictionaryTrie;
 };
 
-export const getRandomFullPuzzle = (): Puzzle => {
+const getRandomFullPuzzle = (): Puzzle => {
   const trie = getLoadedTrie();
   const randomPuzzle = getUniquePuzzle();
 
@@ -50,3 +50,16 @@ export const getRandomFullPuzzle = (): Puzzle => {
   return puzzle;
 };
 export default getRandomFullPuzzle;
+
+export const getViablePuzzle = () => {
+  const minimumNumWords = 10;
+  const maxNumWords = 100;
+  let puzzle = getRandomFullPuzzle();
+  while (
+    Object.keys(puzzle.solutionsWithScores).length < minimumNumWords ||
+    Object.keys(puzzle.solutionsWithScores).length > maxNumWords
+  ) {
+    puzzle = getRandomFullPuzzle();
+  }
+  return puzzle;
+};
